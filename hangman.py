@@ -17,11 +17,17 @@ random.seed()
 random.shuffle(word_list)
 winning_word = random.choice(word_list)
 
+# Give player a hint by
+# obscuring the word using hyphens
+# length of hint is equal to length of winning word minus first 3 letters
+hint = "-"*(len(winning_word) - 3)
+
 # Prompt user for input
-guess = input("Guess the word: ")
+# Showing the first 3 letters of the word as hing
+guess = input("Guess the word " + winning_word[:3] + hint + ": > ")
 
 # Check if  user guessed correctly
 if guess == winning_word:
     print("You survived!")
 else:
-    print("You are hanged!")
+    print("You lost!")
