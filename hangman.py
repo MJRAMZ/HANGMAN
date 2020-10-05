@@ -1,13 +1,20 @@
 # Importing random module for pseudo-random functionality
 import random
 
-display_message = """
+title_display = """===================
 H A N G M A N
+====================
 """
-print(display_message)
+print(title_display)
 
 # List of random words to choose from
 word_list = ["python", "java", "kotlin", "javascript"]
+
+# Total number of tries use has in order to win
+TRIES = 10
+
+# String format for displaying current tries
+tries_left = "You have {} attempts left."
 
 # Seeding the random behavior
 # No argument passed, seeding from current system time
@@ -20,14 +27,36 @@ winning_word = random.choice(word_list)
 # Give player a hint by
 # obscuring the word using hyphens
 # length of hint is equal to length of winning word minus first 3 letters
-hint = "-"*(len(winning_word) - 3)
+wordlength = len(winning_word)
+hint = "-"*(wordlength)
+guess_index = []
 
-# Prompt user for input
-# Showing the first 3 letters of the word as hing
-guess = input("Guess the word " + winning_word[:3] + hint + ": > ")
+# keep the game alive as long as the user still
+# has tries left
+while TRIES > 0:
 
-# Check if  user guessed correctly
-if guess == winning_word:
-    print("You survived!")
-else:
-    print("You lost!")
+    # Display total number of attempts left
+    print(tries_left.format(str(TRIES)))
+
+    print(hint)
+    # Prompt user for input
+    # Showing the first 3 letters of the word as hing
+    guess = input("Guess the word: > ")
+   # Check if  user guessed a letter correctly
+    if guess in winning_word:
+        TRIES -= 1
+        guess_index = [index for index, element in enumerate(list(winning_word)) if element in guess]
+        for j in guess_index:
+            hint = hint[:j] + guess + hint[j + 1:]
+        if hint == winning_word:
+            print("\nThe word was: " + hint)
+            print("Congratulations! You won")
+            print("""Thanks for playing!\nWe'll see how well you did in the next stage""")
+            quit(0)
+    else:
+        TRIES -= 1
+        print("That letter doesn't appear in the word\n")
+
+print("The word was: " + hint)
+print("Sorry, you lost")
+print("Better luck next time")
